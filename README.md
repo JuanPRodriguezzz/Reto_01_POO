@@ -1,83 +1,129 @@
-# Reto01_Poo
+# Reto_01_Poo
 # Juan Pablo Rodríguez Cruz
 1. Crear una función que realice operaciones básicas (suma, resta, multiplicación, división) entre dos números, según la elección del usuario, la forma de entrada de la función será los dos operandos y el caracter usado para la operación. entrada: (1,2,"+"), salida (3).
 
 ```
-from subprocess import call
+import os
 
-def limpiar_pantalla(): #Función para limpiar la consola
-    call("cls",shell=True)
+class Calculadora:
+    """Clase para realizar operaciones básicas entre dos números."""
 
-def continuar(): # Función para limpiar la consola dando Enter
-    input("\nEnter para continuar")
-    call("cls",shell=True)
+    def __init__(self):
+        pass
 
-def operaciones_basicas(num1,num2,operador):
-    while True:     
-        if operador == '+':
-            Resultado = num1 + num2
-        elif operador == '-':
-            Resultado = num1 - num2
-        elif operador == '*':
-            Resultado = num1 * num2
-        elif operador == '/':
-            if num2 != 0:
-                Resultado = num1 / num2
+    @staticmethod
+    def limpiar_pantalla():
+        """Limpia la consola."""
+        os.system("cls" if os.name == "nt" else "clear")
+
+    @staticmethod
+    def continuar():
+        """Pausa la ejecución hasta que el usuario presione Enter."""
+        input("\nPresiona Enter para continuar...")
+        Calculadora.limpiar_pantalla()
+
+    def operaciones_basicas(self, num1, num2, operador):
+        try:
+            if operador == '+':
+                resultado = num1 + num2
+            elif operador == '-':
+                resultado = num1 - num2
+            elif operador == '*':
+                resultado = num1 * num2
+            elif operador == '/':
+                if num2 != 0:
+                    resultado = num1 / num2
+                else:
+                    print("\nError: No se puede dividir por cero.\n")
+                    return
             else:
-                print("\nNo se puede dividir por cero.\n")
-                break
-        else:
-            print("\n\nIntente de nuevo\n")
-            continuar()
-            break
-        print(f"\n\n{num1} {operador} {num2} = {Resultado}\n")
-        break
-      
-while True:
-    limpiar_pantalla()
-    num1,num2,operador = input("\nIngrese el 1er número, el 2do y el operador separados por comas, (num1,num2,op): ").split(',')
-    num1=float(num1)
-    num2=float(num2)
-    operador=str(operador)
-    operaciones_basicas(num1,num2,operador)
-    continuar()
-    continue
+                print("\nError: Operador no válido. Intenta nuevamente.")
+                return
+            print(f"\nResultado: {num1} {operador} {num2} = {resultado}\n")
+        except Exception as e:
+            print(f"\nError: {str(e)}")
+
+    def ejecutar(self):
+        while True:
+            self.limpiar_pantalla()
+            try:
+                entrada = input("Ingrese el 1er número, el 2do y el operador separados por comas (num1,num2,operador): ")
+                num1, num2, operador = entrada.split(',')
+                num1 = float(num1)
+                num2 = float(num2)
+                operador = operador.strip()
+                self.operaciones_basicas(num1, num2, operador)
+            except ValueError:
+                print("\nError: Entrada inválida. Asegúrate de usar el formato correcto (num1,num2,operador).\n")
+            self.continuar()
+
+# Instanciar y ejecutar la calculadora
+if __name__ == "__main__":
+    calculadora = Calculadora()
+    calculadora.ejecutar()
+
 ```
+
 
 2. Realice una función que permita validar si una palabra es un palíndromo. Condición: No se vale hacer slicing para invertir la palabra y verificar que sea igual a la original.
 
-
 ```
-from subprocess import call
+import os  # Para limpiar la pantalla
 
-def limpiar_pantalla(): 
-    call("cls",shell=True)
-def continuar(): # Función para limpiar la pantalla continuando
-    input("\nEnter para continuar ")
-    call("cls",shell=True)
+class PalindromoChecker:
+    def __init__(self):
+        """Inicializa la clase PalindromoChecker."""
+        pass
 
+    @staticmethod
+    def limpiar_pantalla():
+        """Limpia la consola."""
+        os.system("cls" if os.name == "nt" else "clear")
 
-def verif_palindromo(palabra):
-    palabra = palabra.upper()
-    
-    Length = len(palabra)
-    
-    for i in range(Length // 2):
-        if palabra[i] != palabra[Length - i - 1]:
-            return False
-    return True
+    @staticmethod
+    def continuar():
+        """Pausa la ejecución hasta que el usuario presione Enter."""
+        input("\nPresiona Enter para continuar...")
+        PalindromoChecker.limpiar_pantalla()
 
-limpiar_pantalla()
-while True:
-    Ingreso = input("\nIngrese una palabra para verificar si es un palíndromo: ")
-    if verif_palindromo(Ingreso):
-        print(f"\n\n{Ingreso} es un palíndromo.\n")
-        continuar()
-        continue
-    else:
-        print(f"\n\n{Ingreso} no es un palíndromo.\n")
-        continuar()
-        continue
+    @staticmethod
+    def es_palindromo(palabra):
+        Parámetros:
+        - palabra (str): La palabra a verificar.
+
+        Retorna:
+        - True si es un palíndromo, False en caso contrario.
+        """
+        palabra = palabra.upper()
+        longitud = len(palabra)
+        
+        for i in range(longitud // 2):
+            if palabra[i] != palabra[longitud - i - 1]:
+                return False
+        return True
+
+    def ejecutar(self):
+        """Método principal para ejecutar el programa."""
+        while True:
+            self.limpiar_pantalla()
+            try:
+                palabra = input("\nIngrese una palabra para verificar si es un palíndromo: ").strip()
+                if not palabra:
+                    print("\nError: No ingresaste ninguna palabra. Intenta nuevamente.\n")
+                    self.continuar()
+                    continue
+
+                if self.es_palindromo(palabra):
+                    print(f"\n\n{palabra} es un palíndromo.\n")
+                else:
+                    print(f"\n\n{palabra} no es un palíndromo.\n")
+            except Exception as e:
+                print(f"\nOcurrió un error inesperado: {str(e)}\n")
+            self.continuar()
+
+if __name__ == "__main__":
+    checker = PalindromoChecker()
+    checker.ejecutar()
 ```
 
 3. Escribir una función que reciba una lista de números y devuelva solo aquellos que son primos. La función debe recibir una lista de enteros y retornar solo aquellos que sean primos.
