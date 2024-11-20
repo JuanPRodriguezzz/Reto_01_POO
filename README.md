@@ -3,7 +3,7 @@
 1. Crear una función que realice operaciones básicas (suma, resta, multiplicación, división) entre dos números, según la elección del usuario, la forma de entrada de la función será los dos operandos y el caracter usado para la operación. entrada: (1,2,"+"), salida (3).
 
 ```
-import os
+import os # Para limpiar la pantalla
 
 class Calculadora:
 
@@ -132,6 +132,11 @@ class Primos:
         os.system("cls" if os.name == "nt" else "clear")
 
     @staticmethod
+    def continuar():
+        """Pausa la ejecución hasta que el usuario presione Enter."""
+        input("\nPresiona Enter para continuar...")
+
+    @staticmethod
     def es_primo(n):
         if n < 2:
             return False
@@ -153,7 +158,6 @@ class Primos:
         return primos
 
     def ejecutar(self):
-        """Método principal para ejecutar el programa."""
         while True:
             self.limpiar_pantalla()
             try:
@@ -162,8 +166,8 @@ class Primos:
                 primos = self.obtener_primos(numeros)
                 print("\nNúmeros primos en la lista:", primos)
             except Exception as e:
-                print(f"\nOcurrió un error inesperado: {str(e)}")
-            input("\nPresiona Enter para continuar...")
+                print(f"\nError: {str(e)}")
+            self.continuar()
 
 if __name__ == "__main__":
     primos_checker = Primos()
@@ -175,30 +179,61 @@ if __name__ == "__main__":
 
 
 ```
-from subprocess import call
+import os  # Para limpiar la pantalla
 
-def limpiar_pantalla(): #Función para limpiar la consola
-    call("cls",shell=True)
+class MayorSumaConsecutiva:
+    def __init__(self):
+        pass
 
-def mayor_suma_consecutiva():
-    # Solicitar al usuario que ingrese la lista de números separados por espacios
-    entrada = input("\nIngrese una lista de números enteros separados por espacios: ")
-    lista = list(map(int, entrada.split()))  # Convertir la entrada en una lista de enteros
-    
-   
-    if len(lista) < 2:
-        return None  # No se puede calcular la suma si hay menos de dos elementos
-    
-    suma = lista[0] + lista[1]  
-    for i in range(len(lista) - 1):
-        sumas_consecutivas = lista[i] + lista[i + 1]
-        max_suma = max(suma, sumas_consecutivas)
-    
-    return max_suma
+    @staticmethod
+    def limpiar_pantalla():
+        """Limpia la consola."""
+        os.system("cls" if os.name == "nt" else "clear")
 
-if __name__=="__main__":
-    limpiar_pantalla()
-    print("\n\nLa mayor suma entre dos números consecutivos es:", mayor_suma_consecutiva(),"\n\n")  
+    @staticmethod
+    def continuar():
+        """Pausa la ejecución hasta que el usuario presione Enter."""
+        input("\nPresiona Enter para continuar...")
+
+    @staticmethod
+    def calcular_mayor_suma(lista):
+        if len(lista) < 2:
+            return None  # No se puede calcular si hay menos de dos elementos
+
+        mayor_suma = lista[0] + lista[1]
+        for i in range(len(lista) - 1):
+            suma_actual = lista[i] + lista[i + 1]
+            if suma_actual > mayor_suma:
+                mayor_suma = suma_actual
+
+        return mayor_suma
+
+    def ejecutar(self):
+        while True:
+            self.limpiar_pantalla()
+            try:
+                entrada = input("\nIngrese una lista de números enteros separados por espacios: ").strip()
+                lista = list(map(int, entrada.split()))  # Convertir la entrada en una lista de enteros
+
+                if not lista:  # Si la lista está vacía
+                    print("\nError: Debe ingresar números. Intente nuevamente.\n")
+                else:
+                    resultado = self.calcular_mayor_suma(lista)
+                    if resultado is None:
+                        print("\nError: La lista debe contener al menos dos números.\n")
+                    else:
+                        print(f"\nLa mayor suma entre dos números consecutivos es: {resultado}\n")
+            except ValueError:
+                print("\nError: Asegúrate de ingresar solo números enteros separados por espacios.\n")
+            except Exception as e:
+                print(f"\nOcurrió un error inesperado: {str(e)}\n")
+
+            self.continuar()
+
+if __name__ == "__main__":
+    programa = MayorSumaConsecutiva()
+    programa.ejecutar()
+
 ```
 
 5.Escribir una función que reciba una lista de string y retorne unicamente aquellos elementos que tengan los mismos caracteres.
