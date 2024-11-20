@@ -6,7 +6,6 @@
 import os
 
 class Calculadora:
-    """Clase para realizar operaciones básicas entre dos números."""
 
     def __init__(self):
         pass
@@ -72,7 +71,6 @@ import os  # Para limpiar la pantalla
 
 class PalindromoChecker:
     def __init__(self):
-        """Inicializa la clase PalindromoChecker."""
         pass
 
     @staticmethod
@@ -87,13 +85,7 @@ class PalindromoChecker:
         PalindromoChecker.limpiar_pantalla()
 
     @staticmethod
-    def es_palindromo(palabra):
-        Parámetros:
-        - palabra (str): La palabra a verificar.
-
-        Retorna:
-        - True si es un palíndromo, False en caso contrario.
-        """
+    def verif_palindromo(palabra):
         palabra = palabra.upper()
         longitud = len(palabra)
         
@@ -103,22 +95,21 @@ class PalindromoChecker:
         return True
 
     def ejecutar(self):
-        """Método principal para ejecutar el programa."""
         while True:
             self.limpiar_pantalla()
             try:
                 palabra = input("\nIngrese una palabra para verificar si es un palíndromo: ").strip()
                 if not palabra:
-                    print("\nError: No ingresaste ninguna palabra. Intenta nuevamente.\n")
+                    print("\nError: No se ingresó ninguna palabra. Intente nuevamente.\n")
                     self.continuar()
                     continue
 
-                if self.es_palindromo(palabra):
+                if self.verif_palindromo(palabra):
                     print(f"\n\n{palabra} es un palíndromo.\n")
                 else:
                     print(f"\n\n{palabra} no es un palíndromo.\n")
             except Exception as e:
-                print(f"\nOcurrió un error inesperado: {str(e)}\n")
+                print(f"\nError: {str(e)}\n")
             self.continuar()
 
 if __name__ == "__main__":
@@ -129,36 +120,57 @@ if __name__ == "__main__":
 3. Escribir una función que reciba una lista de números y devuelva solo aquellos que son primos. La función debe recibir una lista de enteros y retornar solo aquellos que sean primos.
 
 ```
-from subprocess import call
+import os  # Para limpiar la pantalla
 
-def limpiar_pantalla(): #Función para limpiar la consola
-    call("cls",shell=True)
+class Primos:
+    def __init__(self):
+        pass
 
-def números_primos():
-    lista = input("Ingrese una lista de números separados por comas y sin espacios: ").split(',')
-    primos = []
-    for números in lista:
-        try:
-            número=int(números)
-            if número > 1:
-                número_primo = True
-            elif número == 1:
-                    número_primo = False
+    @staticmethod
+    def limpiar_pantalla():
+        """Limpia la consola."""
+        os.system("cls" if os.name == "nt" else "clear")
 
-            for i in range(2, int(número ** 0.5) + 1):
-                if número % i == 0:
-                    número_primo = False
-                    break   
-            if número_primo:
-                primos.append(número)
-        except:
-            print(f"\"{números}\" no es un número entero válido.")
-    return primos
+    @staticmethod
+    def es_primo(n):
+        if n < 2:
+            return False
+        for i in range(2, int(n ** 0.5) + 1):
+            if n % i == 0:
+                return False
+        return True
 
-if __name__=="__main__":
-    limpiar_pantalla()
-    print("Números primos en la lista:", números_primos())
+    @staticmethod
+    def obtener_primos(lista):
+        primos = []
+        for item in lista:
+            try:
+                numero = int(item)
+                if Primos.es_primo(numero):
+                    primos.append(numero)
+            except ValueError:
+                print(f"\"{item}\" no es un número entero válido.")
+        return primos
+
+    def ejecutar(self):
+        """Método principal para ejecutar el programa."""
+        while True:
+            self.limpiar_pantalla()
+            try:
+                entrada = input("Ingrese una lista de números separados por comas y sin espacios: ")
+                numeros = entrada.split(',')
+                primos = self.obtener_primos(numeros)
+                print("\nNúmeros primos en la lista:", primos)
+            except Exception as e:
+                print(f"\nOcurrió un error inesperado: {str(e)}")
+            input("\nPresiona Enter para continuar...")
+
+if __name__ == "__main__":
+    primos_checker = Primos()
+    primos_checker.ejecutar()
+
 ```
+
 4. Escribir una función que reciba una lista de números enteros y retorne la mayor suma entre dos elementos consecutivos.
 
 
