@@ -240,28 +240,57 @@ if __name__ == "__main__":
 
 
 ```
-from subprocess import call
+import os  # Para limpiar la pantalla
 
-def limpiar_pantalla(): #Función para limpiar la consola
-    call("cls",shell=True)
+class MismosCaracteres:
+    def __init__(self):
+        pass
 
-def mayor_suma_consecutiva():
-    # Solicitar al usuario que ingrese la lista de números separados por espacios
-    entrada = input("\nIngrese una lista de números enteros separados por espacios: ")
-    lista = list(map(int, entrada.split()))  # Convertir la entrada en una lista de enteros
-    
-   
-    if len(lista) < 2:
-        return None  # No se puede calcular la suma si hay menos de dos elementos
-    
-    suma = lista[0] + lista[1]  
-    for i in range(len(lista) - 1):
-        sumas_consecutivas = lista[i] + lista[i + 1]
-        max_suma = max(suma, sumas_consecutivas)
-    
-    return max_suma
+    @staticmethod
+    def limpiar_pantalla():
+        """Limpia la consola."""
+        os.system("cls" if os.name == "nt" else "clear")
 
-if __name__=="__main__":
-    limpiar_pantalla()
-    print("\n\nLa mayor suma entre dos números consecutivos es:", mayor_suma_consecutiva(),"\n\n")
+    @staticmethod
+    def continuar():
+        """Pausa la ejecución hasta que el usuario presione Enter."""
+        input("\nPresiona Enter para continuar...")
+
+    @staticmethod
+    def filtrar_mismos_caracteres(lista):
+        grupos = {}  # Diccionario para agrupar palabras
+        lista = list(set(lista))  # Elimina duplicados de la lista original
+        
+        for palabra in lista:
+            clave = ''.join(sorted(palabra.lower()))  # Ordena los caracteres y convierte a minúsculas
+            if clave not in grupos:
+                grupos[clave] = []
+            grupos[clave].append(palabra)
+
+        # Filtra solo los grupos con más de una palabra
+        resultado = [item for sublista in grupos.values() if len(sublista) > 1 for item in sublista]
+        return resultado
+
+    def ejecutar(self):
+        while True:
+            self.limpiar_pantalla()
+            try:
+                entrada = input("\nIngrese una lista de palabras separadas por espacios: ").strip()
+                lista = entrada.split()  # Divide la entrada en una lista de palabras
+
+                if not lista:  # Si la lista está vacía
+                    print("\nIntente nuevamente.\n")
+                else:
+                    resultado = self.filtrar_mismos_caracteres(lista)
+                    if resultado:
+                        print(f"\nLas palabras con los mismos caracteres son: {resultado}\n")
+                    else:
+                        print("\nNo se encontraron palabras con los mismos caracteres.\n")
+            except Exception as e:
+                print(f"\nError: {str(e)}\n")
+
+            self.continuar()
+
+if __name__ == "__main__":
+    MismosCaracteres().ejecutar()
 ```
